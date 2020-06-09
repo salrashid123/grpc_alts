@@ -4,7 +4,7 @@ Simple helloworld a demonstrating GCP support for [Application Layer Transport S
 
 `ALTS` can be thought of intrinsic platform-based security which helps ensure service->service communication uses the machine's bound identity itself.
 
-That is, the gRPC communication will utilize and transmit the service account the system runs as itself.  This is in contrast to user-space based security (eg, auth header, mTLS, etc) because the system that provides the assertion of machine identity provided by the platform itself.
+That is, the gRPC communication will utilize and transmit an encrypted message at the application layer using keys intrinsic to the peer systems involved.  This is in contrast to user-space based security (eg, auth header, mTLS with user-space certs, etc) because the system that provides the assertion of machine identity provided by the platform itself.
 
 ---
 
