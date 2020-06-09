@@ -1,0 +1,45 @@
+node:
+  cluster: service_greeter
+  id: test-id
+
+static_resources:
+  listeners:
+  - name: listener_0
+    address:
+      socket_address: { address: 0.0.0.0, port_value: 18080 }
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          stat_prefix: ingress_http
+          codec_type: AUTO
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: local_service
+              domains: ["*"]
+              routes:
+              - match:
+                  prefix: "/"
+                route:
+                  cluster: service_upstream           
+          http_filters:
+          - name: envoy.router
+
+  clusters:
+  - name: service_upstream
+    connect_timeout: 2s
+    type: STRICT_DNS
+    dns_lookup_family: V4_ONLY
+    lb_policy: ROUND_ROBIN
+    hosts:
+    - socket_address:
+        address: alts-server
+        port_value: 18081
+    transport_socket:
+      name: envoy.transport_sockets.alts
+      typed_config:
+        "@type": type.googleapis.com/envoy.extensions.transport_sockets.alts.v3.Alts
+        handshaker_service: "169.254.169.254:8080"
+        peer_service_accounts:
+        - "alts-server@mineral-minutia-820.iam.gserviceaccount.com"
