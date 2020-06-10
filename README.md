@@ -1,6 +1,6 @@
 ## gRPC ALTS HelloWorld
 
-Simple helloworld a demonstrating GCP support for [Application Layer Transport Security](https://cloud.google.com/security/encryption-in-transit/application-layer-transport-security).  You can read more about ALTS in that article (no sense in repeating it).
+Simple helloworld demonstrating GCP support for [Application Layer Transport Security](https://cloud.google.com/security/encryption-in-transit/application-layer-transport-security).  You can read more about ALTS in that article (no sense in repeating it).
 
 `ALTS` can be thought of intrinsic platform-based security which helps ensure service->service communication uses the machine's bound identity itself.
 
@@ -160,24 +160,9 @@ You can either run envoy within docker or (as i prefer), a direct binary.  You c
 On your laptop:
 
 ```bash
-$ mkdir /tmp/envoybin
-$ docker run -v /tmp/envoybin/:/tmp/envoybin -ti envoyproxy/envoy /bin/bash
+$ docker cp `docker create envoyproxy/envoy:v1.13.1`:/usr/local/bin/envoy .
 ```
 
-copy the envoy binary out and exit container
-
-```bash
-root@45e96404eb8a:/# cp /usr/local/bin/envoy /tmp/envoybin/
-root@45e96404eb8a:/# exit
-exit
-```
-
-find envoy outside now
-
-```bash
-$ ls /tmp/envoybin/envoy 
-/tmp/envoybin/envoy
-```
 
 #### Copy Configuration files to client and server
 
