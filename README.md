@@ -4,7 +4,7 @@ Simple helloworld demonstrating GCP support for [Application Layer Transport Sec
 
 `ALTS` can be thought of intrinsic platform-based security which helps ensure service->service communication uses the machine's bound identity itself.
 
-That is, the gRPC communication will utilize and transmit an encrypted message at the application layer using keys intrinsic to the peer systems involved.  This is in contrast to user-space based security (eg, auth header, mTLS with user-space certs, etc) because the system that provides the assertion of machine identity provided by the platform itself.
+That is, the gRPC communication will utilize and transmit an encrypted message at the application layer using keys intrinsic to the peer systems involved.  This is in contrast to user-space based security (eg, auth header, mTLS with user-space certs, etc) because the system that provides the assertion of machine identity and security is provided by the platform itself.
 
 This repo also shows a sample envoy client server using ALTS but for HTTP traffic (you could, ofcourse use gRPC just the same w/ envoy but i'll stick with HTTP here).
 
@@ -23,8 +23,8 @@ The difference in this repo is that I specifically show how to setup the VMs and
 #### Build Client/Server
 
 ```bash
-go build -o bin/client client/main.go
-go build -o bin/server server/main.go
+go build -o bin/client client/client.go
+go build -o bin/server server/server.go
 ```
 
 #### Create Service accounts/VM
