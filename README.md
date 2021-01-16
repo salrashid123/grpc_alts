@@ -40,12 +40,12 @@ export SERVER_SERVICE_ACCOUNT=alts-server@$PROJECT_ID.iam.gserviceaccount.com
 $ gcloud  compute  instances create alts-server \
   --service-account=$SERVER_SERVICE_ACCOUNT \
   --scopes=https://www.googleapis.com/auth/userinfo.email \
-  --image=debian-10-buster-v20200521 --zone us-central1-a --image-project=debian-cloud 
+  --zone us-central1-a --image-family debian-10 --image-project=debian-cloud
 
 $ gcloud compute  instances create alts-client \
   --service-account=$CLIENT_SERVICE_ACCOUNT \
   --scopes=https://www.googleapis.com/auth/userinfo.email \
-  --image=debian-10-buster-v20200521 --zone us-central1-a --image-project=debian-cloud 
+  --zone us-central1-a --image-family debian-10 --image-project=debian-cloud
 ```
 
 #### Copy binaries
@@ -160,7 +160,9 @@ You can either run envoy within docker or (as i prefer), a direct binary.  You c
 On your laptop:
 
 ```bash
-$ docker cp `docker create envoyproxy/envoy:v1.13.1`:/usr/local/bin/envoy .
+$ docker cp `docker create envoyproxy/envoy:v1.16.1`:/usr/local/bin/envoy .
+
+# scp the binary to alts-server and alts-client
 ```
 
 
@@ -186,7 +188,7 @@ On `alts-client`:
 Open up a new shell on `alts-client` and run
 
 ```
-curl -v http://localhost:18080
+curl -v http://localhost:18080/get
 ```
 
 You should see the headers sent back to you from httpbin via two hops through envoy:
