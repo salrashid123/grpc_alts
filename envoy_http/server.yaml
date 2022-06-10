@@ -27,13 +27,15 @@ static_resources:
                   
           http_filters:
           - name: envoy.filters.http.router
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router          
       transport_socket:
         name: envoy.transport_sockets.alts
         typed_config:
           "@type": type.googleapis.com/envoy.extensions.transport_sockets.alts.v3.Alts
           handshaker_service: "169.254.169.254:8080"
           peer_service_accounts:
-          - "alts-client@mineral-minutia-820.iam.gserviceaccount.com"
+          - alts-client@mineral-minutia-820.iam.gserviceaccount.com
           
   clusters:
   - name: service_httpbin

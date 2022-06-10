@@ -26,6 +26,8 @@ static_resources:
                   cluster: service_upstream           
           http_filters:
           - name: envoy.filters.http.router
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router          
 
   clusters:
   - name: service_upstream
@@ -48,4 +50,4 @@ static_resources:
         "@type": type.googleapis.com/envoy.extensions.transport_sockets.alts.v3.Alts
         handshaker_service: "169.254.169.254:8080"
         peer_service_accounts:
-        - "alts-server@mineral-minutia-820.iam.gserviceaccount.com"
+        - alts-server@mineral-minutia-820.iam.gserviceaccount.com

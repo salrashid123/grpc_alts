@@ -58,11 +58,9 @@ $ gcloud compute scp bin/server alts-server:
 #### Run Server
 
 ```bash
-$ gcloud compute scp alts-server
+$ gcloud compute scp bin/server alts-server:
+$ gcloud compute ssh alts-server
 $ ./server 
-
-2020/06/08 21:58:11 AuthInfo PeerServiceAccount: alts-client@mineral-minutia-820.iam.gserviceaccount.com
-2020/06/08 21:58:11 AuthInfo LocalServiceAccount: alts-server@mineral-minutia-820.iam.gserviceaccount.com
 ```
 
 #### Run Client
@@ -70,7 +68,9 @@ $ ./server
 Replace the value for your `SERVER_SERVICE_ACCOUNT` below
 
 ```bash
-$ gcloud compute scp alts-client
+$ gcloud compute scp bin/client alts-client:
+$ gcloud compute ssh alts-client
+
 $ ./client --addr alts-server:50051 --targetServiceAccount $SERVER_SERVICE_ACCOUNT
 
 2020/06/08 21:58:11 AuthInfo PeerServiceAccount: alts-server@mineral-minutia-820.iam.gserviceaccount.com
@@ -160,15 +160,35 @@ You can either run envoy within docker or (as i prefer), a direct binary.  You c
 On your laptop:
 
 ```bash
-$ docker cp `docker create envoyproxy/envoy:v1.16.1`:/usr/local/bin/envoy .
+$ docker cp `docker create envoyproxy/envoy:latest`:/usr/local/bin/envoy .
 
-# scp the binary to alts-server and alts-client
+gcloud compute scp envoy alts-server:
+gcloud compute scp envoy alts-client:
 ```
 
 
 #### Copy Configuration files to client and server
 
 Copy `server.yaml` to `alts-server` and `client-yaml` to `alts-client`
+
+
+remember to replace the value of `peer_service_accounts` with your PROJECT_ID
+
+```yaml
+      transport_socket:
+        name: envoy.transport_sockets.alts
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.transport_sockets.alts.v3.Alts
+          handshaker_service: "169.254.169.254:8080"
+          peer_service_accounts:
+          - "alts-client@mineral-minutia-820.iam.gserviceaccount.com"
+```
+
+```bash
+gcloud compute scp envoy_http/server.yaml alts-server:
+gcloud compute scp envoy_http/client.yaml alts-client:
+```
+
 
 #### Run Envoy on Client/server
 
