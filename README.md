@@ -23,9 +23,11 @@ The difference in this repo is that I specifically show how to setup the VMs and
 #### Build Client/Server
 
 ```bash
-go build -o bin/client client/client.go
-go build -o bin/server server/server.go
+GOOS=linux GOARCH=amd64 go build -o bin/client client/client.go
+GOOS=linux GOARCH=amd64 go build -o bin/server server/server.go
 ```
+
+>> NOTE, the go binary is compiled for local laptop here
 
 #### Create Service accounts/VM
 
